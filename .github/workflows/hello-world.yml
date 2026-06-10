@@ -35,23 +35,26 @@
 #           echo Add other actions to build,
 #           echo test, and deploy your project.
 
-
-# The name of the workflow as it will appear in the GitHub Actions tab
+# The name of the workflow as it appears in your GitHub Actions tab
 name: GitHub Actions Demo
 
-# 1. Controls when the workflow will run (The Event)
+# Controls when the workflow will run (The Trigger Event)
 on:
   push:
     branches: [ main ]
 
-# 2. What to do when the event happens (The Jobs)
+# The jobs to execute when the event happens
 jobs:
   explore-github-actions:
-    # Specifies the type of virtual machine runner to use
+    # Specifies the type of isolated virtual machine runner to provision
     runs-on: ubuntu-latest
+
+    # Global environment settings for this specific job
     env:
+      # Explicitly forces third-party actions to use the stable Node 24 runtime wrapper
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
-    # 3. The sequence of tasks to execute (The Steps)
+
+    # The sequential steps executed inside the runner environment
     steps:
       - name: Print a welcome message
         run: echo "Hello, World! GitHub Actions is running."
@@ -63,5 +66,3 @@ jobs:
         run: |
           echo "The repository contains the following files:"
           ls -la
-
-
