@@ -66,3 +66,14 @@ jobs:
         run: |
           echo "The repository contains the following files:"
           ls -la
+      - name: Start Dev Server Background Process
+        run: |
+          npm run dev & 
+          echo $! > dev_server.pid # Save the Process ID
+
+      # ... Run your tests here ...
+
+      - name: Clean Up Server Natively
+        if: always() # Runs even if previous steps fail
+        run: |
+          kill $(cat dev_server.pid) || true
