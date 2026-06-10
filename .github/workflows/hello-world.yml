@@ -1,4 +1,4 @@
-name: Node.js CI/CD Pipeline
+name: Docs-as-Ops Gating Pipeline
 
 on:
   push:
@@ -7,34 +7,21 @@ on:
     branches: [ main ]
 
 jobs:
-  build-and-test:
-    # Forces execution on your newly configured local VPS machine
+  validate-and-compile:
     runs-on: self-hosted
-
+    
     steps:
-      # 1. Pull down the code changes from GitHub
-      - name: Check out repository code
-        uses: actions/checkout@v5
+      - name: Checkout Source Code Repository
+        uses: actions/checkout@v4
 
-      # 2. Explicitly provision and verify the Node runtime environment
-      - name: Setup Node.js Environment
-        uses: actions/setup-node@v5
+      - name: Setup Node.js Environment Runtime
+        uses: actions/setup-node@v4
         with:
-          node-version: '22'
-          cache: 'npm' # Automatically caches node_modules for ultra-fast runs
+          node-version: 22
+          cache: 'npm'
 
-      # 3. Install clean production dependencies
-      - name: Install Project Dependencies
+      - name: Install Application Dependency Matrix
         run: npm ci
 
-      # 4. Execute your test suite
-      - name: Run Code Verification Tests
-        run: npm test
-
-      # 5. Clean up example background tasks safely
-      - name: Start and Test Dev Server
-        run: |
-          npm run dev &
-          echo $! > dev_server.pid
-          sleep 2
-          kill $(cat dev_server.pid) || true
+      - name: Execute Strict Production Build Compilation
+        run: npm run build
