@@ -21,7 +21,7 @@ export default function Home(): React.JSX.Element {
             <Link
               className="button button--primary button--lg"
               style={{padding: '1rem 2.5rem', fontSize: '1.2rem', fontWeight: 'bold', borderRadius: '8px'}}
-              to="/docs/operations-home">
+              to="/docs/github-setup" >
               Enter Operations Console →
             </Link>
           </div>
