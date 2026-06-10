@@ -9,7 +9,8 @@ on:
 # Silences infrastructure warnings by forcing execution on the Node 24 runtime
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
+permissions:
+  contents: write
 jobs:
   validate-and-compile:
     runs-on: self-hosted
