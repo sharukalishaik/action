@@ -1,25 +1,128 @@
-name: Docs-as-Ops Gating Pipeline
+# name: Enterprise Docs CI/CD Gate
+
+# on:
+#   push:
+#     branches: [ main, develop ]
+#   pull_request:
+#     branches: [ develop ]
+
+# env:
+#   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+# permissions:
+#   contents: true
+
+# jobs:
+  
+#   security-and-vulnerability-scan:
+#     runs-on: self-hosted
+#     steps:
+#       - name: Checkout Source code
+#         uses: actions/Checkout@v4
+#         with:
+#           fetch-depth: 0
+#       - name: Scan Commit History for Leaked Secrets
+#         uses: trufflesecurity/trufflehog@main
+#         with:
+#           path: ./
+#           base: ${{ github.event.repository.default_branch }}\
+#           head: HEAD
+#           extra_args: --debug --only-verified
+#         continue-on-error: false
+#       - name: Initialize Node Environment
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: 22
+#           cache: 'npm'
+#       - name: Install Matrix Dependencies
+#         run: npm ci
+
+#       - name: Audit Core Dependencies for Security Flaws
+#         run: npm audit --audit-level=high
+
+#   validate-and-test:
+#     runs-on: self-hosted
+#     needs: security-and-vulnerability-scan # Will not run if Job 1 finds vulnerabilities or leaked secrets
+#     steps:
+#       - name: Checkout Source Code
+#         uses: actions/checkout@v4
+
+#       - name: Initialize Node Environment
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: 22
+#           cache: 'npm'
+
+#       - name: Install Matrix Dependencies
+#         run: npm ci
+
+#       - name: Audit Markdown Syntax Formatting (Linter)
+#         run: npm run lint:md
+
+#       - name: Execute Automated Component Tests
+#         run: npm test
+
+#   # JOB 3: Compile static web files and deploy to live domain
+#   compile-and-deploy:
+#     runs-on: self-hosted
+#     needs: validate-and-test # Will only run if code passes syntax formatting and unit tests
+#     steps:
+#       - name: Checkout Source Code
+#         uses: actions/checkout@v4
+
+#       - name: Initialize Node Environment
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: 22
+#           cache: 'npm'
+
+#       - name: Install Matrix Dependencies
+#         run: npm ci
+
+#       - name: Verify Strict Web Compilation (Fail on Broken Links)
+#         run: npm run build
+
+#       - name: Production Deployment Handshake
+#         # Safe Guardrail: Deployment ONLY executes if the branch is 'main'
+#         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+#         uses: peaceiris/actions-gh-pages@v4
+#         with:
+#           github_token: ${{ secrets.GITHUB_TOKEN }}
+#           publish_dir: ./build 
+
+
+name: Enterprise Docs CI/CD Gate
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, develop ]
   pull_request:
-    branches: [ main ]
+    branches: [ develop ]
 
-# Silences infrastructure warnings by forcing execution on the Node 24 runtime
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 permissions:
   contents: write
-jobs:
-  validate-and-compile:
-    runs-on: self-hosted
-    
-    steps:
-      - name: Checkout Source Code Repository
-        uses: actions/checkout@v4
 
-      - name: Setup Node.js Environment Runtime
+jobs:
+  security-and-vulnerability-scan:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Pulls full commit history so secret scanners can scan historical commits
+
+      - name: Scan Commit Tree for Leaked Secrets
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+          extra_args: --debug --only-verified
+
+      - name: Initialize Node Environment Runtime
         uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -28,10 +131,50 @@ jobs:
       - name: Install Application Dependency Matrix
         run: npm ci
 
-      - name: Execute Strict Production Build Compilation
+      - name: Audit Core Dependencies for Security Flaws
+        run: npm audit --audit-level=high
+
+  validate-and-test:
+    runs-on: self-hosted
+    needs: security-and-vulnerability-scan # Fails instantly and blocks this job if secrets/vulnerabilities exist
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Initialize Node Environment Runtime
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install Application Dependency Matrix
+        run: npm ci
+
+      - name: Audit Markdown Syntax Formatting (Linter)
+        run: npm run lint:md
+
+  compile-and-deploy:
+    runs-on: self-hosted
+    needs: validate-and-test # Requires formatting and validation checks to pass completely
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Initialize Node Environment Runtime
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install Application Dependency Matrix
+        run: npm ci
+
+      - name: Verify Strict Web Compilation (Fail on Broken Links)
         run: npm run build
 
-      - name: Deploy Compiled Assets to GitHub Pages
+      - name: Production Deployment Handshake
+        # Safe Guardrail: Deployment ONLY executes if the target branch is 'main' via direct merge push
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

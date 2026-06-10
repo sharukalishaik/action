@@ -1,51 +1,49 @@
-// import type {ReactNode} from 'react';
-// import clsx from 'clsx';
-// import Link from '@docusaurus/Link';
-// import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-// import Layout from '@theme/Layout';
-// // import HomepageFeatures from '@site/src/components/HomepageFeatures';
-// import Heading from '@theme/Heading';
-
-// import styles from './index.module.css';
-
-// function HomepageHeader() {
-//   const {siteConfig} = useDocusaurusContext();
-//   return (
-//     <header className={clsx('hero hero--primary', styles.heroBanner)}>
-//       <div className="container">
-//         <Heading as="h1" className="hero__title">
-//           {siteConfig.title}
-//         </Heading>
-//         <p className="hero__subtitle">{siteConfig.tagline}</p>
-//         <div className={styles.buttons}>
-//           <Link
-//             className="button button--secondary button--lg"
-//             to="/docs/intro">
-//             Docusaurus Tutorial - 5min ⏱️
-//           </Link>
-//         </div>
-//       </div>
-//     </header>
-//   );
-// }
-
-// export default function Home(): ReactNode {
-//   const {siteConfig} = useDocusaurusContext();
-//   return (
-//     <Layout
-//       title={`Hello from ${siteConfig.title}`}
-//       description="Description will go into a meta tag in <head />">
-//       <HomepageHeader />
-//       <main>
-//         {/* <HomepageFeatures /> */}
-//       </main>
-//     </Layout>
-//   );
-// }
 import React from 'react';
-import { Redirect } from '@docusaurus/router';
+import Link from '@docusaurus/Link';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import Layout from '@theme/Layout';
 
 export default function Home(): React.JSX.Element {
-  // Automatically routes users from the root URL (/) straight to your clean docs hub
-  return <Redirect to="/docs/" />;
+  const { siteConfig } = useDocusaurusContext();
+  return (
+    <Layout
+      title={`${siteConfig.title}`}
+      description="Systems Operations Center Platform">
+      <main style={{ padding: '4rem 2rem', maxWidth: '1200px', margin: '0 auto' }}>
+        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+          <h1 style={{ fontSize: '3.5rem', fontWeight: '800', color: 'var(--ifm-color-primary)' }}>
+            🚀 Systems Operations Hub
+          </h1>
+          <p style={{ fontSize: '1.5rem', opacity: 0.7 }}>
+            The definitive Docs-as-Ops Engineering and Automation Platform.
+          </p>
+          <div style={{ marginTop: '2rem' }}>
+            <Link
+              className="button button--primary button--lg"
+              style={{ padding: '1rem 2.5rem', fontSize: '1.2rem', fontWeight: 'bold', borderRadius: '8px' }}
+              to="/docs/github-setup" >
+              Enter Operations Console → here
+            </Link>
+          </div>
+        </div>
+
+        <hr style={{ margin: '3rem 0', opacity: 0.2 }} />
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+          <div style={{ border: '1px solid var(--ifm-contents-border-color)', padding: '2rem', borderRadius: '12px', background: 'var(--ifm-background-surface-color)' }}>
+            <h3>🛡️ Automated Gating</h3>
+            <p>Every commit undergoes progressive linting, secret validation, and semantic structural scanning automatically.</p>
+          </div>
+          <div style={{ border: '1px solid var(--ifm-contents-border-color)', padding: '2rem', borderRadius: '12px', background: 'var(--ifm-background-surface-color)' }}>
+            <h3>📦 Environment Provisioning</h3>
+            <p>Step-by-step cryptographic configurations, remote runtime structures, and secure pipeline handshakes.</p>
+          </div>
+          <div style={{ border: '1px solid var(--ifm-contents-border-color)', padding: '2rem', borderRadius: '12px', background: 'var(--ifm-background-surface-color)' }}>
+            <h3>⚡ Self-Hosted Execution</h3>
+            <p>Compiled locally on bare-metal infrastructure, ensuring maximum isolation and zero data egress vulnerabilities.</p>
+          </div>
+        </div>
+      </main>
+    </Layout>
+  );
 }

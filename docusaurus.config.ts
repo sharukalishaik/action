@@ -7,9 +7,9 @@ const config: Config = {
   tagline: 'Docs-as-Ops Engineering Platform',
   favicon: 'img/favicon.ico',
 
-  future: {
-    v4: true,
-  },
+  // future: {
+  //   v4: true,
+  // },
 
   url: 'https://sharukalishaik.github.io',
   baseUrl: '/action',
@@ -18,10 +18,10 @@ const config: Config = {
 
   onBrokenLinks: 'throw',
   markdown: {
-    format: 'mdx',
-    hooks: {
-      onBrokenMarkdownLinks: 'warn',
-    },
+    format: 'detect',
+    // hooks: {
+    //   onBrokenMarkdownLinks: 'warn',
+    // },
   },
 
   i18n: {
