@@ -49,7 +49,8 @@ jobs:
   explore-github-actions:
     # Specifies the type of virtual machine runner to use
     runs-on: ubuntu-latest
-
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
     # 3. The sequence of tasks to execute (The Steps)
     steps:
       - name: Print a welcome message
