@@ -1,0 +1,25 @@
+{
+  "name": "action",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "echo 'Starting dev server...' && exit 0",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sharukalishaik/action.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/sharukalishaik/action/issues"
+  },
+  "homepage": "https://github.com/sharukalishaik/action#readme",
+  "devDependencies": {
+    "jest": "^30.4.2"
+  }
+}
