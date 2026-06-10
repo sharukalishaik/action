@@ -1,0 +1,33 @@
+---
+id: system-migration
+title: System Migration Protocol
+sidebar_label: Migration Guide
+---
+
+# System Migration Protocol
+
+This operational runbook outlines the steps required to migrate core database blocks and static assets across environment instances safely.
+
+---
+
+## 1. Pre-Flight Checklist
+
+Before initiating data cluster modifications, engineers must verify the following baseline states:
+
+- [ ] **Replica Consistency:** Run integrity checks across all storage nodes.
+- [ ] **Storage Snapshots:** Execute a localized block-level cold backup.
+- [ ] **Traffic Drain:** Confirm connection pools are scaling down gracefully.
+
+---
+
+## 2. Execution Runbook
+
+### Step A: Drain Active Connections
+Execute the localized connection pool drain script via your terminal:
+
+```javascript
+const systemDrain = () => {
+  console.log("Draining connection pools gracefully...");
+  // Operational logic for network socket termination goes here
+};
+systemDrain();
