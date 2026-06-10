@@ -47,7 +47,7 @@ on:
 jobs:
   explore-github-actions:
     # Specifies the type of isolated virtual machine runner to provision
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     # Global environment settings for this specific job
     env:
