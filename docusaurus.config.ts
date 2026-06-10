@@ -12,7 +12,7 @@ const config: Config = {
   },
 
   url: 'https://sharukalishaik.github.io',
-  baseUrl: '/',
+  baseUrl: '/action',
   organizationName: 'sharukalishaik',
   projectName: 'action',
 
