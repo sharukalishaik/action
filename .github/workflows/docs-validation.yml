@@ -29,3 +29,10 @@ jobs:
 
       - name: Execute Strict Production Build Compilation
         run: npm run build
+
+      - name: Deploy to Live Local Web Server
+        run: |
+          # Use npx docusaurus serve to host the production directory on port 3001 in the background
+          # We check if a background instance is already running and refresh it safely
+          pkill -f "docusaurus serve" || true
+          nohup npx docusaurus serve --port 3001 --host 0.0.0.0 > /dev/null 2>&1 &
