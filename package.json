@@ -4,8 +4,10 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
-    "start": "docusaurus start",
+    "start": "docusaurus start --port 3001",
     "build": "docusaurus build",
+    "test": "jest",
+    "lint:md": "markdownlint 'docs/**/*.mdx' 'docs/**/*.md'",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
@@ -29,6 +31,8 @@
     "@docusaurus/tsconfig": "3.10.1",
     "@docusaurus/types": "3.10.1",
     "@types/react": "^19.0.0",
+    "jest": "^30.4.2",
+    "markdownlint-cli": "^0.48.0",
     "typescript": "~6.0.2"
   },
   "browserslist": {
